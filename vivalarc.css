@@ -15,8 +15,21 @@ vivaldi version: v7.9+
     --window-button-scale:0.8;
     --window-button-opacity:0.3;
     --colorArcBg:transparent;
-    --webview-shadow-light:0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 0px var(--window-border) 0px rgba(0, 0, 0, 0.10);
-    --webview-shadow-dark:0px 2px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px 8px 0px rgba(0, 0, 0, 0.05), 0px 0px 0px 1.2px #ffffff18;
+
+    /* Feature 2: Multi-Layered Webview Shadows & URL Focus Ring */
+    --webview-shadow-light:
+        0 1px 2px rgba(0, 0, 0, 0.06),
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        0 0 0 0.5px rgba(0, 0, 0, 0.04);
+    --webview-shadow-dark:
+        0 2px 6px rgba(0, 0, 0, 0.22),
+        0 8px 24px rgba(0, 0, 0, 0.16),
+        0 0 0 1px rgba(255, 255, 255, 0.10);
+    --urlbar-focus-ring: 0 0 0 2px color-mix(in srgb, var(--colorHighlightBg, var(--colorAccentBg)) 35%, transparent);
+
+    /* Feature 3: Snappy Motion Timing */
+    --transition-duration: 0.18s;
+    --transition-easing: cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* Core layout */
@@ -320,8 +333,8 @@ button.button-startpage:active{
     opacity: 0;
     pointer-events: auto !important;
     -webkit-app-region: no-drag !important;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.18s ease;
+    transition: transform var(--transition-duration, 0.18s) var(--transition-easing, cubic-bezier(0.2, 0, 0, 1)),
+                opacity var(--transition-duration, 0.18s) var(--transition-easing, cubic-bezier(0.2, 0, 0, 1));
     transition-delay: 0.14s; /* 140ms debounce to prevent flicker/stutter when moving mouse */
     background: var(--colorBgAlphaBlur, rgba(25, 25, 32, 0.92)) !important;
     backdrop-filter: blur(24px) saturate(160%) !important;
@@ -440,3 +453,57 @@ button.button-startpage:active{
 }
 
 
+
+/* ==========================================================================
+   FEATURE 2: LAYERED WEBVIEW SHADOWS & ACCENT FOCUS RING
+   Gives webview floating card depth and modern accent focus ring
+   ========================================================================== */
+#browser:not(.tabs-top):not(.tabs-bottom):not(.fullscreen) #webpage-stack {
+    box-shadow: var(--webview-shadow-dark); /* fallback default */
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom):not(.fullscreen).theme-light #webpage-stack {
+    box-shadow: var(--webview-shadow-light) !important;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom):not(.fullscreen).theme-dark #webpage-stack {
+    box-shadow: var(--webview-shadow-dark) !important;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) .UrlBar-AddressField:focus-within {
+    box-shadow: var(--urlbar-focus-ring) !important;
+}
+
+
+/* ==========================================================================
+   FEATURE 3: SNAPPY MOTION EASING CURVE
+   Replaces linear/ease with snappy cubic-bezier deceleration
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+    #browser:not(.tabs-top):not(.tabs-bottom) .toolbar .button-toolbar button,
+    #browser:not(.tabs-top):not(.tabs-bottom) .UrlBar-AddressField {
+        transition: background-color var(--transition-duration, 0.18s) var(--transition-easing, cubic-bezier(0.2, 0, 0, 1)),
+                    border-color var(--transition-duration, 0.18s) var(--transition-easing, cubic-bezier(0.2, 0, 0, 1)),
+                    box-shadow var(--transition-duration, 0.18s) var(--transition-easing, cubic-bezier(0.2, 0, 0, 1)) !important;
+    }
+}
+
+
+/* ==========================================================================
+   FEATURE 4: FLOATING PANEL OVERLAY & ICONS-ONLY MODE BUGFIXES
+   Removes background boxes, bleeding, and backdrop-filter glitches on side panels
+   ========================================================================== */
+#browser:not(.tabs-top):not(.tabs-bottom) #panels-container.icons,
+#browser:not(.tabs-top):not(.tabs-bottom) #panels-container.icons :is(#panels, #switch, .panel-group, .toolbar-panel) {
+    background: var(--colorArcBg) !important;
+    backdrop-filter: none !important;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) #panels-container.icons :is(#panels, #switch) {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) #panels-container.overlay .panel-group {
+    background: var(--colorBgAlphaBlur, rgba(0, 0, 0, 0.4)) !important;
+}

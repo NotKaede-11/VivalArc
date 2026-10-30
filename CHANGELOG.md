@@ -1,15 +1,32 @@
 # VivalArc Enhancement Documentation
 
-## Helium-Style Overlay Auto-Hide Top Bar
+## Latest Updates
 
-### 📌 Overview
-This fork enhances [VivalArc](https://github.com/tovifun/VivalArc) by integrating a floating Helium-style auto-hiding top bar directly into `vivalarc.css`. All original sidebar tabs, theme variables, and layout behaviors are preserved, while reclaiming vertical screen space with a smooth, distraction-free top bar that stays hidden until hovered.
+### 🎨 Visual Polish, Snappy Motion & Panel Fixes (via KazmirBO)
+*Credit to [@KazmirBO](https://github.com/KazmirBO/VivalArc) for the design patterns and fixes adapted into our fork.*
+
+#### 1. Multi-Layered Webview Shadows & Accent URL Focus Ring
+* **3-Tier Card Depth**: Replaced flat drop-shadows with multi-layered depth tokens (`--webview-shadow-light` and `--webview-shadow-dark`):
+  - Tight contact shadow directly below the edge.
+  - Soft ambient diffusion blur.
+  - Subtle hairline border rim for crisp delineation against background wallpaper in both light and dark themes.
+* **Modern URL Focus Ring**: Added `--urlbar-focus-ring` to `.UrlBar-AddressField:focus-within` using modern CSS `color-mix()` matching the current theme's accent color.
+
+#### 2. Snappy Motion Deceleration Curve
+* **Responsive Physics**: Replaced standard sluggish `ease` with `cubic-bezier(0.2, 0, 0, 1)` via `--transition-easing` and `--transition-duration: 0.18s`.
+* **Smooth Micro-Interactions**: Integrated into the Helium overlay top bar drop-down and toolbar button hover animations (respects `prefers-reduced-motion`).
+
+#### 3. Floating Panel Overlay & Icons-Only Mode Bugfixes
+* **Clean Floating Drawers**: Fixed transparency, border, and backdrop-filter clipping issues on `#panels-container` and `#switch` when using Vivaldi's side panels in floating overlay or icons-only mode.
 
 ---
 
-### 🛠️ What Was Added
+## Previous Updates
 
-#### Floating Overlay Top Bar (`#header`)
+### 📌 Helium-Style Overlay Auto-Hide Top Bar
+This fork enhances [VivalArc](https://github.com/tovifun/VivalArc) by integrating a floating Helium-style auto-hiding top bar directly into `vivalarc.css`. All original sidebar tabs, theme variables, and layout behaviors are preserved, while reclaiming vertical screen space with a smooth, distraction-free top bar that stays hidden until hovered.
+
+#### What Was Added
 * **Fixed Overlay Positioning**:
   - `position: fixed !important; top: 0; left: 0; right: 0; height: 38px !important; z-index: 99999 !important;`.
   - Floats above the viewport without displacing the webpage or sidebar downwards.
@@ -27,4 +44,4 @@ This fork enhances [VivalArc](https://github.com/tovifun/VivalArc) by integratin
 ---
 
 ### 📂 File Structure
-* **[`vivalarc.css`](file:///C:/Users/Beo/Downloads/03_Personal/05_Misc/VivalArc/vivalarc.css)**: The unified stylesheet containing base VivalArc + Helium auto-hide top bar.
+* **[`vivalarc.css`](file:///C:/Users/Beo/Downloads/03_Personal/05_Misc/VivalArc/vivalarc.css)**: The unified stylesheet containing base VivalArc + Helium auto-hide top bar + KazmirBO visual/motion enhancements.
