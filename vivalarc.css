@@ -302,3 +302,141 @@ button.button-startpage:after{
 button.button-startpage:active{
     background:none !important;
 }
+
+/* ==========================================================================
+   SECTION 1: OVERLAY AUTO-HIDE TOP BAR (HELIUM-STYLE SPACIOUS HEADER)
+   ========================================================================== */
+
+/* Fix header as a floating overlay above content without shifting webview */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    z-index: 99999 !important;
+    transform: translateY(calc(-100% + 7px));
+    opacity: 0;
+    pointer-events: auto !important;
+    -webkit-app-region: no-drag !important;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.18s ease;
+    transition-delay: 0.14s; /* 140ms debounce to prevent flicker/stutter when moving mouse */
+    background: var(--colorBgAlphaBlur, rgba(25, 25, 32, 0.92)) !important;
+    backdrop-filter: blur(24px) saturate(160%) !important;
+    border-bottom: 1px solid var(--colorFgAlpha, rgba(255, 255, 255, 0.08)) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.40) !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* Reveal header immediately on hover or focus with zero delay */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header:hover,
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header:focus-within {
+    transform: translateY(0);
+    opacity: 1;
+    transition-delay: 0s !important;
+}
+
+/* Invisible bottom apron extending 14px below the bar so rapid mouse movements never drop hover */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 14px !important;
+    pointer-events: auto !important;
+}
+
+/* Titlebar layout: Helium-like spacious flex alignment */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header #titlebar {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Vivaldi menu icon button: Helium-style padded pill */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header #titlebar .vivaldi {
+    margin-left: 2px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    -webkit-app-region: no-drag !important;
+    transition: background-color 0.15s ease !important;
+}
+
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header #titlebar .vivaldi:hover {
+    background-color: var(--colorFgAlpha, rgba(255, 255, 255, 0.12)) !important;
+}
+
+/* Draggable window title text: strictly isolate -webkit-app-region: drag here so hover never stutters */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header #titlebar #pagetitle,
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header #titlebar .window-title {
+    flex: 1 !important;
+    text-align: center !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    color: var(--colorFgAlpha, rgba(255, 255, 255, 0.70)) !important;
+    -webkit-app-region: drag !important;
+    user-select: none !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Window controls: Helium/Windows 11 clean rectangular buttons */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header .window-buttongroup {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    margin-left: auto !important;
+    -webkit-app-region: no-drag !important;
+    gap: 2px !important;
+}
+
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header .window-buttongroup button {
+    width: 44px !important;
+    height: 30px !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    opacity: 0.80 !important;
+    -webkit-app-region: no-drag !important;
+    transition: background-color 0.15s ease, opacity 0.15s ease, color 0.15s ease !important;
+}
+
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header .window-buttongroup button:hover {
+    background-color: var(--colorFgAlpha, rgba(255, 255, 255, 0.12)) !important;
+    opacity: 1 !important;
+}
+
+/* Close button turns red on hover */
+#browser:not(.fullscreen):not(.is-settingspage):not(.tabs-top):not(.tabs-bottom) #header .window-buttongroup button.window-close:hover {
+    background-color: #e81123 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Gutter alignment: eliminate empty top gap and ensure balanced outer frame */
+#browser:not(.tabs-top):not(.tabs-bottom):not(.fullscreen) #webview-container {
+    margin-top: var(--window-border, 3px) !important;
+}
+
+#browser:not(.tabs-top):not(.tabs-bottom) #tabs-tabbar-container {
+    padding-top: var(--window-border, 3px) !important;
+}
+
+
